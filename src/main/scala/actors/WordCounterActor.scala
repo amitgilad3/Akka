@@ -14,9 +14,19 @@ class WordCounterActor (actor : ActorRef) extends  Actor{
   var countSaverActorRef: ActorRef = actor
   def receive: Receive = {
     case CountWords(mapOfWords : Iterator[String]) => {
-     val count = mapOfWords.flatMap(_.split("\\W+")).foldLeft(Map.empty[String, Int]){
-      (count, word) => count + (word -> (count.getOrElse(word, 0) + 1))
+      val count =
+        (for {
+          line <- mapOfWords
+        } yield {
+            val words = line.split("\\s+")
+            words.size
+          }).sum
+      countSaverActorRef ! SaveCountToFile (count)
+      log.info("finished counting words")
     }
+
+   log.info("finished counting words")
+
   }
-  }
+
 }

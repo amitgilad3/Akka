@@ -1,12 +1,11 @@
 package actors
 
-import java.io.FileNotFoundException
+import java.io.{IOException, FileNotFoundException}
 
 import akka.actor.{Actor, ActorRef}
 import akka.event.Logging
 
 import scala.io.Source
-import scala.sys.process.processInternal.IOException
 
 /**
  * Created by Amit on 22/11/2015.
@@ -20,12 +19,16 @@ class FileReaderActor(actor : ActorRef) extends Actor{
   def receive: Receive = {
     case ReadFile(fileLocation : String)  => {
       try {
+        log.info(s"Starting to read file: $fileLocation")
         val source = Source.fromFile(fileLocation).getLines
         wordCounterActorRef ! CountWords(source)
-        log.info("finished reading file")
+        log.info(s"finished reading file $fileLocation")
       }
       catch {
-        case ex: FileNotFoundException => println("Couldn't find that file.")
+        case ex: FileNotFoundException =>{
+          log.error("failed to read file- file dosent exist" )
+          println("Couldn't find that file.")
+        }
         case ex: IOException => println("Had an IOException trying to read that file")
       }
 

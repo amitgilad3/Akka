@@ -1,6 +1,6 @@
 package com.grymco.akka.main
 
-import actors.{WordCounterActor, ReadFile, FileReaderActor}
+import actors.{WordCountSaverActor, WordCounterActor, ReadFile, FileReaderActor}
 import akka.actor.{ActorSystem, Props}
 import com.typesafe.scalalogging.Logger
 import org.slf4j.LoggerFactory
@@ -20,7 +20,11 @@ object Boot extends App{
   implicit val actorSystem = ActorSystem("akka-system")
 
   logger.info("creating actor  of type WordCounterActor")
-  val wordCounterActor =actorSystem.actorOf(Props[WordCounterActor],"word-counter-actor")
+  val wordCounterSaverActor =actorSystem.actorOf(Props[WordCountSaverActor],"word-counter-saver-actor")
+
+
+  logger.info("creating actor  of type WordCounterActor")
+  val wordCounterActor =actorSystem.actorOf(Props(new WordCounterActor(wordCounterSaverActor)),"word-counter-actor")
 
   logger.info("creating actor  of type FileReaderActor")
   val reader = actorSystem.actorOf(Props(new FileReaderActor (wordCounterActor)), "file-reading-actor")
