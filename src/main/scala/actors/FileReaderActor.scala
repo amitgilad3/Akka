@@ -27,7 +27,7 @@ class FileReaderActor(actor : ActorRef) extends Actor{
       catch {
         case ex: FileNotFoundException =>{
           log.error("failed to read file- file dosent exist" )
-          println("Couldn't find that file.")
+          context.system.shutdown()
         }
         case ex: IOException => println("Had an IOException trying to read that file")
       }
