@@ -1,6 +1,6 @@
 package actors
 
-import java.io.{FileNotFoundException, File, PrintWriter}
+import java.io.{File, FileNotFoundException, PrintWriter}
 
 import akka.actor.Actor
 import akka.event.Logging
@@ -27,6 +27,8 @@ class WordCountSaverActor extends Actor {
         sortedWordCount foreach ( (t2) =>  writer.println (t2._1 + " " + t2._2 + "\n")  )
         writer.close()
         log.info("write to file ok")
+
+        context.system.shutdown()
       }
       catch {
         case ex: FileNotFoundException => {
