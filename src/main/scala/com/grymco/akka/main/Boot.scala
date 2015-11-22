@@ -19,7 +19,7 @@ object Boot extends App{
   logger.info("creating actor system for  application")
   implicit val actorSystem = ActorSystem("akka-system")
 
-  logger.info("creating actor  of type WordCounterActor")
+  logger.info("creating actor  of type WordCountSaverActor")
   val wordCounterSaverActor =actorSystem.actorOf(Props[WordCountSaverActor],"word-counter-saver-actor")
 
 

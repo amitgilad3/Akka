@@ -21,7 +21,7 @@ class FileReaderActor(actor : ActorRef) extends Actor{
       try {
         log.info(s"Starting to read file: $fileLocation")
         val source = Source.fromFile(fileLocation).getLines
-        wordCounterActorRef ! CountWords(source)
+        wordCounterActorRef ! CountWords(fileLocation,source)
         log.info(s"finished reading file $fileLocation")
       }
       catch {
