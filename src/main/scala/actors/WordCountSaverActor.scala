@@ -10,24 +10,26 @@ import akka.event.Logging
  */
 case class SaveCountToFile(filePath : String , wordCount : Int )
 
-class WordCountSaverActor extends Actor{
+class WordCountSaverActor extends Actor {
   val log = Logging(context.system, this)
+
   def receive: Receive = {
-    case SaveCountToFile (filePath : String,wordCount : Int) => {
-      log.info("saving")
+    case SaveCountToFile(filePath: String, wordCount: Int) => {
+      log.info("creating file")
       val file = new File(filePath);
       val path = file.getAbsoluteFile().getParent();
       try {
+        log.info("saving to file ")
         val writer = new PrintWriter(new File(path + File.separator + "fileWithNumberOfWords.txt"))
         writer.write(wordCount.toString)
-        writer.close()
+        log.info("write to file ok")
       }
-      catch{
-        case ex: FileNotFoundException =>{
-          log.error("failed to read file- file dosent exist" )
+      catch {
+        case ex: FileNotFoundException => {
+          log.error("failed to read file- file dosent exist")
+
         }
       }
-
     }
   }
 }
