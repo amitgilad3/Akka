@@ -14,7 +14,7 @@ then
    sort -r -k2,2 -k1,1 <$fileTORead= > sorted.txt
    ( head -1 fileWithNumberOfWords.txt  ) > $fiveLinesFileName=
    while read line; do
-   curl --request GET 'http://localhost:8080?reversestring&string=amit'
+   curl --request GET 'http://localhost:8080/reversestring?string=23455'
    done < $fiveLinesFileName
    rm -rf  $fiveLinesFileName
    rm -rf sorted.txt
